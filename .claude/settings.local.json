@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(node -e ' *)",
+      "Bash(npx playwright *)",
+      "Bash(curl -s http://localhost:5174/)",
+      "Bash(npx --yes vite build --mode development)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('react-router-dom'\\); console.log\\('OK'\\)\")",
+      "Bash(npm config *)",
+      "Bash(npx vite *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":5173 \")",
+      "Bash(findstr LISTENING)",
+      "Bash(curl -s -o /dev/null -w \" | %{http_code}\" http://127.0.0.1:5173/)",
+      "Bash(taskkill /PID 23432 /F)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5173/)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' 'https://images.unsplash.com/__TRACKED_VAR__?w=100&q=10')"
+    ]
+  }
+}
