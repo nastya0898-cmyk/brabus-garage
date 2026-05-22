@@ -5,7 +5,7 @@ export const TestimonialsColumn = ({ className, testimonials, duration = 10 }) =
   return (
     <div className={className}>
       <motion.div
-        animate={{ translateY: '-50%' }}
+        animate={{ y: '-50%' }}
         transition={{
           duration,
           repeat: Infinity,

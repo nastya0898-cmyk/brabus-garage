@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { Check } from 'lucide-react'
+import { motion } from 'motion/react'
 
 const services = [
   {
@@ -178,29 +180,18 @@ const faqs = [
   },
 ]
 
-function SectionHeader({ number, title, subtitle }) {
-  return (
-    <div className="flex items-start gap-6 mb-10">
-      <span className="text-[10px] tracking-[0.3em] text-neutral-300 font-light pt-1 flex-shrink-0">
-        {number}
-      </span>
-      <div>
-        <h2 className="text-[38px] font-extralight tracking-[-0.02em] text-[#0d0d0d] leading-tight">
-          {title}
-        </h2>
-        <p className="text-[11px] uppercase tracking-[0.2em] text-neutral-400 font-light mt-2">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  )
+const fadeUp = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+  viewport: { once: true },
 }
 
 export default function ServicesPage() {
   return (
     <div className="w-full bg-white">
 
-      {/* Page Hero */}
+      {/* ─── Page Hero ─── */}
       <div className="pt-32 pb-20 px-[6vw] border-b border-neutral-100">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-8 h-px bg-neutral-300" />
@@ -219,220 +210,297 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Services — one per section */}
-      {services.map((s, i) => (
-        <div
-          key={s.id}
-          id={s.id}
-          className={`py-24 px-[6vw] ${i % 2 === 1 ? 'bg-[#f7f7f7]' : 'bg-white'}`}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      {/* ─── Service Cards — reference-inspired 2-panel layout ─── */}
+      {services.map((s, i) => {
+        const flip = i % 2 === 1
+        return (
+          <motion.section
+            key={s.id}
+            id={s.id}
+            {...fadeUp}
+            className={`border-b border-neutral-100 ${flip ? 'bg-[#f7f7f7]' : 'bg-white'}`}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-neutral-100">
 
-            {/* Text — alternates sides */}
-            <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-              <SectionHeader number={s.number} title={s.title} subtitle={s.subtitle} />
+              {/* ── LEFT: price + CTA ── */}
+              <div className={`px-[6vw] py-20 flex flex-col ${flip ? 'lg:order-2' : ''}`}>
 
-              <p className="text-neutral-500 text-[14px] leading-[1.85] font-light mb-5">
-                {s.intro}
-              </p>
-              <p className="text-neutral-400 text-[13px] leading-[1.85] font-light mb-10">
-                {s.details}
-              </p>
-
-              {/* Includes list */}
-              {s.includes && (
-                <div className="mb-10">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-400 font-light mb-5">
-                    Ce qui est inclus
-                  </p>
-                  <div className="space-y-3">
-                    {s.includes.map((item) => (
-                      <div key={item} className="flex items-start gap-4">
-                        <div className="w-4 h-px bg-[#0d0d0d] mt-[9px] flex-shrink-0" />
-                        <p className="text-[13px] text-neutral-600 font-light">{item}</p>
-                      </div>
-                    ))}
+                {/* Header */}
+                <div className="flex items-start gap-5 mb-10">
+                  <span className="text-[10px] tracking-[0.32em] text-neutral-300 font-light pt-1.5 flex-shrink-0">
+                    {s.number}
+                  </span>
+                  <div>
+                    <h2 className="text-[36px] font-extralight tracking-[-0.02em] text-[#0d0d0d] leading-tight">
+                      {s.title}
+                    </h2>
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-neutral-400 font-light mt-2">
+                      {s.subtitle}
+                    </p>
                   </div>
                 </div>
-              )}
 
-              {/* Stages (Tuning) */}
-              {s.stages && (
-                <div className="mb-10">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-400 font-light mb-5">
-                    Niveaux de préparation
+                {/* Intro */}
+                <p className="text-neutral-500 text-[14px] leading-[1.85] font-light mb-10">
+                  {s.intro}
+                </p>
+
+                {/* Price block — reference large-price style */}
+                <div className="py-8 border-t border-b border-neutral-200 mb-10">
+                  <p className="text-[52px] md:text-[62px] font-extralight tracking-tight text-[#0d0d0d] leading-none">
+                    {s.price}
                   </p>
-                  <div className="space-y-4">
-                    {s.stages.map((stage) => (
-                      <div key={stage.name} className="border border-neutral-200 p-5">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[13px] font-medium text-[#0d0d0d]">{stage.name}</span>
-                          <span className="text-[12px] font-light text-neutral-500 bg-neutral-100 px-3 py-1">
-                            {stage.gain}
+                  <div className="flex flex-wrap gap-6 mt-3">
+                    {s.unit && (
+                      <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400 font-light">
+                        {s.unit}
+                      </span>
+                    )}
+                    <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400 font-light">
+                      Durée : {s.duration}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Process steps */}
+                {s.process && (
+                  <div className="mb-10">
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-light mb-6">
+                      Notre processus
+                    </p>
+                    <div className="grid grid-cols-2 gap-5">
+                      {s.process.map((p) => (
+                        <div key={p.step}>
+                          <span className="text-[10px] tracking-[0.32em] text-neutral-300 font-light">
+                            {p.step}
                           </span>
+                          <p className="text-[13px] font-light text-[#0d0d0d] mt-1 mb-0.5">{p.label}</p>
+                          <p className="text-[11px] text-neutral-400 font-light leading-relaxed">{p.desc}</p>
                         </div>
-                        <p className="text-[12px] text-neutral-500 font-light">{stage.desc}</p>
-                        <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 font-light mt-1">
-                          {stage.note}
-                        </p>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* CTA */}
+                <div className="mt-auto pt-2">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-8 px-7 py-4 border border-[#0d0d0d] text-[10px] tracking-[0.22em] uppercase font-light text-[#0d0d0d] hover:bg-[#0d0d0d] hover:text-white transition-all duration-300 group"
+                  >
+                    <span>Prendre RDV</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform duration-300">→</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* ── RIGHT: image + features/packages/stages ── */}
+              <div className={`px-[6vw] py-20 flex flex-col ${flip ? 'lg:order-1' : ''}`}>
+
+                {/* Service image */}
+                <div className="mb-10 overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden">
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-700"
+                    />
                   </div>
                 </div>
-              )}
 
-              {/* Detailing packages */}
-              {s.packages && (
-                <div className="mb-10">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-400 font-light mb-5">
-                    Nos forfaits
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {s.packages.map((pkg) => (
-                      <div
-                        key={pkg.name}
-                        className={`p-6 border ${
-                          pkg.highlighted
-                            ? 'border-[#0d0d0d] bg-[#0d0d0d] text-white'
-                            : 'border-neutral-200'
-                        }`}
-                      >
-                        <p
-                          className={`text-[10px] uppercase tracking-[0.2em] font-light mb-1 ${
-                            pkg.highlighted ? 'text-neutral-400' : 'text-neutral-400'
+                {/* Details text */}
+                <p className="text-neutral-400 text-[13px] leading-[1.85] font-light mb-8">
+                  {s.details}
+                </p>
+
+                {/* ── Includes list (Diagnostic & Carrosserie) ── */}
+                {s.includes && !s.stages && (
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-light mb-5">
+                      Ce qui est inclus
+                    </p>
+                    <ul className="space-y-3.5">
+                      {s.includes.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-3.5">
+                          <Check
+                            className="w-3 h-3 text-[#0d0d0d] flex-shrink-0 mt-[3px]"
+                            strokeWidth={2.5}
+                          />
+                          <span className="text-[13px] text-neutral-600 font-light leading-relaxed">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* ── Detailing packages ── */}
+                {s.packages && (
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-light mb-6">
+                      Nos forfaits
+                    </p>
+                    <div className="space-y-3">
+                      {s.packages.map((pkg) => (
+                        <div
+                          key={pkg.name}
+                          className={`p-6 border transition-colors duration-300 ${
+                            pkg.highlighted
+                              ? 'border-[#0d0d0d] bg-[#0d0d0d]'
+                              : 'border-neutral-200 bg-white hover:border-neutral-400'
                           }`}
                         >
-                          Forfait
-                        </p>
-                        <p
-                          className={`text-[17px] font-light mb-1 ${
-                            pkg.highlighted ? 'text-white' : 'text-[#0d0d0d]'
-                          }`}
-                        >
-                          {pkg.name}
-                        </p>
-                        <p
-                          className={`text-[20px] font-extralight mb-5 ${
-                            pkg.highlighted ? 'text-white' : 'text-[#0d0d0d]'
-                          }`}
-                        >
-                          {pkg.price}
-                        </p>
-                        <div className="space-y-2">
-                          {pkg.items.map((item) => (
-                            <div key={item} className="flex items-start gap-2">
-                              <div
-                                className={`w-3 h-px mt-[9px] flex-shrink-0 ${
-                                  pkg.highlighted ? 'bg-neutral-500' : 'bg-neutral-300'
-                                }`}
-                              />
-                              <p
-                                className={`text-[11px] font-light leading-relaxed ${
-                                  pkg.highlighted ? 'text-neutral-300' : 'text-neutral-500'
-                                }`}
-                              >
-                                {item}
+                          <div className="flex items-baseline justify-between mb-4">
+                            <div>
+                              <p className={`text-[10px] uppercase tracking-[0.2em] font-light ${
+                                pkg.highlighted ? 'text-neutral-500' : 'text-neutral-400'
+                              }`}>
+                                Forfait
+                              </p>
+                              <p className={`text-[18px] font-light mt-0.5 ${
+                                pkg.highlighted ? 'text-white' : 'text-[#0d0d0d]'
+                              }`}>
+                                {pkg.name}
                               </p>
                             </div>
-                          ))}
+                            <p className={`text-[22px] font-extralight ${
+                              pkg.highlighted ? 'text-white' : 'text-[#0d0d0d]'
+                            }`}>
+                              {pkg.price}
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            {pkg.items.map((item, idx) => (
+                              <div key={idx} className="flex items-start gap-2.5">
+                                <Check
+                                  className={`w-2.5 h-2.5 flex-shrink-0 mt-[3px] ${
+                                    pkg.highlighted ? 'text-neutral-500' : 'text-neutral-400'
+                                  }`}
+                                  strokeWidth={2.5}
+                                />
+                                <span className={`text-[11px] font-light leading-relaxed ${
+                                  pkg.highlighted ? 'text-neutral-300' : 'text-neutral-500'
+                                }`}>
+                                  {item}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Process */}
-              {s.process && (
-                <div className="mb-10">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-400 font-light mb-5">
-                    Notre processus
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {s.process.map((p) => (
-                      <div key={p.step}>
-                        <span className="text-[10px] tracking-[0.3em] text-neutral-300 font-light">
-                          {p.step}
-                        </span>
-                        <p className="text-[13px] font-light text-[#0d0d0d] mt-1 mb-1">{p.label}</p>
-                        <p className="text-[11px] text-neutral-400 font-light leading-relaxed">
-                          {p.desc}
-                        </p>
+                {/* ── Tuning stages + includes ── */}
+                {s.stages && (
+                  <div className="space-y-8">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-light mb-5">
+                        Niveaux de préparation
+                      </p>
+                      <div className="space-y-2.5">
+                        {s.stages.map((stage) => (
+                          <div
+                            key={stage.name}
+                            className="border border-neutral-200 p-5 hover:border-neutral-400 transition-colors duration-300 group"
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-3 mb-1.5">
+                                  <p className="text-[13px] font-light text-[#0d0d0d]">{stage.name}</p>
+                                  <p className="text-[9px] uppercase tracking-[0.18em] text-neutral-400 font-light">
+                                    {stage.note}
+                                  </p>
+                                </div>
+                                <p className="text-[12px] text-neutral-500 font-light">{stage.desc}</p>
+                              </div>
+                              <p className="flex-shrink-0 text-[12px] font-light text-[#0d0d0d] bg-neutral-100 px-3 py-1.5 group-hover:bg-neutral-200 transition-colors duration-300">
+                                {stage.gain}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                    </div>
 
-              {/* Price + CTA */}
-              <div className="flex items-center justify-between pt-8 border-t border-neutral-100">
-                <div>
-                  <p className="text-[28px] font-extralight text-[#0d0d0d]">{s.price}</p>
-                  <div className="flex gap-6 mt-1">
-                    {s.unit && (
-                      <p className="text-[10px] text-neutral-400 font-light">{s.unit}</p>
-                    )}
-                    <p className="text-[10px] text-neutral-400 font-light">Durée : {s.duration}</p>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-light mb-5">
+                        Inclus dans chaque préparation
+                      </p>
+                      <ul className="space-y-3">
+                        {s.includes.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-3.5">
+                            <Check
+                              className="w-3 h-3 text-[#0d0d0d] flex-shrink-0 mt-[3px]"
+                              strokeWidth={2.5}
+                            />
+                            <span className="text-[12px] text-neutral-600 font-light leading-relaxed">
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <Link
-                  to="/contact"
-                  className="px-7 py-3 bg-[#0d0d0d] text-white text-[10px] tracking-[0.22em] uppercase font-light hover:bg-neutral-800 transition-colors duration-300"
-                >
-                  Prendre RDV
-                </Link>
+                )}
               </div>
             </div>
+          </motion.section>
+        )
+      })}
 
-            {/* Image */}
-            <div className={`${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {/* FAQ */}
+      {/* ─── FAQ ─── */}
       <div className="py-24 px-[6vw] bg-[#f7f7f7]">
         <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-8 h-px bg-neutral-300" />
-            <p className="uppercase tracking-[0.35em] text-[10px] text-neutral-400 font-light">
-              Questions fréquentes
-            </p>
-          </div>
-          <h2 className="text-[40px] font-extralight tracking-[-0.02em] text-[#0d0d0d] leading-tight mb-14">
-            Vous avez<br />
-            <span className="font-semibold">des questions ?</span>
-          </h2>
+          <motion.div {...fadeUp}>
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-8 h-px bg-neutral-300" />
+              <p className="uppercase tracking-[0.35em] text-[10px] text-neutral-400 font-light">
+                Questions fréquentes
+              </p>
+            </div>
+            <h2 className="text-[40px] font-extralight tracking-[-0.02em] text-[#0d0d0d] leading-tight mb-14">
+              Vous avez<br />
+              <span className="font-semibold">des questions ?</span>
+            </h2>
+          </motion.div>
 
           <div className="space-y-0">
             {faqs.map((faq, i) => (
-              <div key={i} className="border-t border-neutral-200 py-7">
-                <p className="text-[15px] font-light text-[#0d0d0d] mb-3">{faq.q}</p>
-                <p className="text-[13px] text-neutral-500 font-light leading-[1.8]">{faq.a}</p>
-              </div>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true }}
+                className="border-t border-neutral-200 py-7 group"
+              >
+                <div className="flex items-start gap-6">
+                  <span className="text-[10px] tracking-[0.28em] text-neutral-300 font-light pt-0.5 flex-shrink-0">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <p className="text-[15px] font-light text-[#0d0d0d] mb-3">{faq.q}</p>
+                    <p className="text-[13px] text-neutral-500 font-light leading-[1.8]">{faq.a}</p>
+                  </div>
+                </div>
+              </motion.div>
             ))}
             <div className="border-t border-neutral-200" />
           </div>
         </div>
       </div>
 
-      {/* CTA Banner */}
+      {/* ─── CTA Banner ─── */}
       <div className="bg-[#0d0d0d] py-20 px-[6vw] flex flex-col md:flex-row items-center justify-between gap-8">
         <div>
           <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-light mb-3">
             Prêt à commencer ?
           </p>
           <h2 className="text-[36px] font-extralight text-white leading-tight">
-            Réservez votre
-            <br />
+            Réservez votre<br />
             <span className="font-semibold">rendez-vous</span>
           </h2>
         </div>
@@ -443,6 +511,7 @@ export default function ServicesPage() {
           Nous contacter
         </Link>
       </div>
+
     </div>
   )
 }
