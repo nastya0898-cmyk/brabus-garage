@@ -1,15 +1,17 @@
-import Hero from '../components/Hero'
+import EtherealBeamsHero from '../components/ui/ethereal-beams-hero'
 import About from '../components/About'
 import Team from '../components/Team'
 import Gallery from '../components/Gallery'
+import Testimonials from '../components/Testimonials'
 
 export default function Home() {
   return (
     <>
-      <Hero />
+      <EtherealBeamsHero />
       <About />
       <Team />
       <Gallery />
+      <Testimonials />
     </>
   )
 }
